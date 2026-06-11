@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrew Koch — Mechanical Engineer</title>
+<meta name="description" content="Portfolio of Andrew Koch: mechanical engineering, multibody dynamics, FEA, and CAD — with interactive 3D models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EBEEF0;
+  --paper-deep:#DFE4E8;
+  --ink:#14181B;
+  --ink-soft:#3C454C;
+  --ink-faint:#6B767E;
+  --line:#C3CBD1;
+  --line-strong:#9AA6AE;
+  --viewport:#1B2126;
+  --c-blue:#1565C0;
+  --c-teal:#00897B;
+  --c-green:#558B2F;
+  --c-yellow:#F9A825;
+  --c-orange:#EF6C00;
+  --c-red:#C62828;
+  --maxw:1180px;
+  --display:'Saira Semi Condensed',sans-serif;
+  --body:'Public Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  font-family:var(--body);
+  color:var(--ink);
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    linear-gradient(rgba(195,203,209,.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(195,203,209,.35) 1px, transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+  line-height:1.6;
+  font-size:16px;
+}
+::selection{background:var(--c-yellow);color:var(--ink)}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--c-blue);outline-offset:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+/* ---------- top bar ---------- */
+header.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(235,238,240,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1.5px solid var(--ink);
+}
+.top-inner{
+  max-width:var(--maxw);margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;height:58px;
+}
+.brand{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.06em;text-decoration:none}
+.brand .id{color:var(--ink-faint)}
+nav.menu{display:flex;gap:26px}
+nav.menu a{
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;
+  text-decoration:none;color:var(--ink-soft);padding:4px 0;
+  border-bottom:2px solid transparent;
+}
+nav.menu a:hover{color:var(--ink);border-bottom-color:var(--c-orange)}
+@media(max-width:760px){nav.menu{display:none}}
+
+/* ---------- contour legend scroll indicator ---------- */
+.legend{
+  position:fixed;right:18px;top:50%;transform:translateY(-50%);
+  z-index:40;width:46px;display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.legend .cap{font-family:var(--mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;text-align:center;line-height:1.3}
+.legend .bar{
+  position:relative;width:14px;height:240px;border:1.5px solid var(--ink);
+  background:linear-gradient(to bottom,#C62828,#EF6C00,#F9A825,#558B2F,#00897B,#1565C0);
+}
+.legend .tick{position:absolute;left:100%;width:5px;height:1.5px;background:var(--ink)}
+.legend .marker{
+  position:absolute;left:-7px;width:26px;height:3px;background:var(--ink);
+  box-shadow:0 0 0 1.5px var(--paper);transition:top .08s linear;
+}
+.legend .val{font-family:var(--mono);font-size:9px;color:var(--ink-soft)}
+@media(max-width:1280px){.legend{display:none}}
+
+/* ---------- hero ---------- */
+.hero{border-bottom:1.5px solid var(--ink);background:var(--paper-deep)}
+.hero-grid{
+  max-width:var(--maxw);margin:0 auto;padding:0 28px;
+  display:grid;grid-template-columns:minmax(380px,5fr) 7fr;min-height:560px;
+}
+@media(max-width:920px){.hero-grid{grid-template-columns:1fr;min-height:0}}
+.hero-copy{padding:64px 40px 64px 0;display:flex;flex-direction:column;justify-content:center;border-right:1.5px solid var(--ink)}
+@media(max-width:920px){.hero-copy{border-right:none;border-bottom:1.5px solid var(--ink);padding:48px 0 36px}}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ink-faint);margin-bottom:18px}
+h1{
+  font-family:var(--display);font-weight:800;font-size:clamp(44px,5.6vw,68px);
+  line-height:.98;text-transform:uppercase;letter-spacing:.01em;
+}
+h1 .thin{font-weight:500;color:var(--ink-soft)}
+.hero-sub{margin-top:22px;max-width:46ch;color:var(--ink-soft);font-size:16.5px}
+.hero-tags{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
+.tag{
+  font-family:var(--mono);font-size:11.5px;padding:4px 10px;
+  border:1.5px solid var(--ink);background:var(--paper);letter-spacing:.03em;
+}
+.hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.btn{
+  font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.04em;
+  padding:12px 22px;border:1.5px solid var(--ink);text-decoration:none;
+  background:var(--ink);color:var(--paper);transition:transform .12s ease;
+  display:inline-block;cursor:pointer;
+}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--c-orange)}
+.hero-viewport{position:relative;min-height:420px}
+.hero-viewport .viewport{position:absolute;inset:0}
+@media(max-width:920px){.hero-viewport{min-height:380px;margin:0 -28px}}
+
+/* ---------- viewport (3D viewer) chrome ---------- */
+.viewport{
+  position:relative;background:linear-gradient(180deg,#252C32 0%,var(--viewport) 60%,#11161A 100%);
+  overflow:hidden;width:100%;height:100%;
+}
+.viewport canvas{display:block;width:100%;height:100%;touch-action:none}
+.vp-hud{
+  position:absolute;left:14px;top:12px;font-family:var(--mono);font-size:10.5px;
+  color:#9FB3BF;letter-spacing:.05em;line-height:1.7;pointer-events:none;
+}
+.vp-hud b{color:#E4EDF2;font-weight:600}
+.vp-hint{
+  position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:10px;
+  color:#6E828E;letter-spacing:.05em;pointer-events:none;
+}
+.vp-corner{position:absolute;width:18px;height:18px;border:2px solid #51626E;pointer-events:none}
+.vp-corner.tl{top:8px;left:8px;border-right:none;border-bottom:none}
+.vp-corner.tr{top:8px;right:8px;border-left:none;border-bottom:none}
+.vp-corner.bl{bottom:8px;left:8px;border-right:none;border-top:none}
+.vp-corner.br{bottom:8px;right:8px;border-left:none;border-top:none}
+.vp-tools{position:absolute;right:12px;top:12px;display:flex;gap:8px}
+.vp-btn{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  background:rgba(20,26,30,.8);color:#C7D5DD;border:1px solid #51626E;
+  padding:6px 10px;cursor:pointer;
+}
+.vp-btn:hover,.vp-btn[aria-pressed="true"]{background:var(--c-orange);color:#14181B;border-color:var(--c-orange)}
+.vp-load{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;color:#9FB3BF;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+}
+.vp-load .track{width:180px;height:4px;background:#39444C}
+.vp-load .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--c-blue),var(--c-teal),var(--c-green),var(--c-yellow),var(--c-orange),var(--c-red))}
+
+/* ---------- sections ---------- */
+section{padding:84px 0;border-bottom:1.5px solid var(--ink)}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:46px;flex-wrap:wrap}
+.sec-head h2{
+  font-family:var(--display);font-weight:700;font-size:clamp(28px,3.4vw,40px);
+  text-transform:uppercase;letter-spacing:.02em;
+}
+.sec-head .ref{font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.08em}
+.sec-head .rule{flex:1;height:1.5px;background:var(--ink);min-width:60px;align-self:center}
+
+/* ---------- stats strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--ink);background:var(--paper)}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:22px 24px;border-right:1.5px solid var(--ink)}
+.stat:last-child{border-right:none}
+@media(max-width:860px){.stat:nth-child(2){border-right:none}.stat:nth-child(1),.stat:nth-child(2){border-bottom:1.5px solid var(--ink)}}
+.stat .num{font-family:var(--display);font-weight:800;font-size:34px;line-height:1.1}
+.stat .num span{color:var(--c-orange)}
+.stat .lab{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em;margin-top:4px;line-height:1.5}
+
+/* ---------- project blocks ---------- */
+.project{margin-bottom:72px}
+.project:last-child{margin-bottom:0}
+.proj-frame{border:1.5px solid var(--ink);background:var(--paper)}
+.proj-title{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:14px 22px;border-bottom:1.5px solid var(--ink);flex-wrap:wrap;
+}
+.proj-title h3{font-family:var(--display);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.proj-meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);letter-spacing:.05em;text-align:right}
+.proj-body{display:grid;grid-template-columns:7fr 5fr}
+@media(max-width:920px){.proj-body{grid-template-columns:1fr}}
+.proj-media{border-right:1.5px solid var(--ink);min-height:430px;position:relative}
+@media(max-width:920px){.proj-media{border-right:none;border-bottom:1.5px solid var(--ink);min-height:360px}}
+.proj-copy{padding:28px 30px}
+.proj-copy p{margin-bottom:14px;color:var(--ink-soft);font-size:15.5px}
+.proj-copy p:last-child{margin-bottom:0}
+.callout{
+  margin:18px 0;padding:14px 18px;border-left:4px solid var(--c-orange);
+  background:var(--paper-deep);font-size:14.5px;color:var(--ink);
+}
+.callout .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-faint);display:block;margin-bottom:4px}
+.dims{list-style:none;margin:16px 0 0;display:flex;flex-direction:column;gap:9px}
+.dims li{display:flex;gap:12px;font-size:14px;align-items:baseline}
+.dims .d-key{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-faint);min-width:130px;flex-shrink:0}
+.dims .d-val{color:var(--ink)}
+.model-tabs{display:flex;border-bottom:1.5px solid var(--ink);height:46px}
+.model-tab{
+  font-family:var(--mono);font-size:12px;letter-spacing:.05em;padding:11px 18px;
+  background:var(--paper-deep);border:none;border-right:1.5px solid var(--ink);cursor:pointer;color:var(--ink-soft);
+}
+.model-tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.video-frame{border-top:1.5px solid var(--ink)}
+.video-frame video{display:block;width:100%;background:#000}
+.video-cap{
+  font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em;
+  padding:10px 22px;border-top:1.5px solid var(--ink);
+}
+
+/* ---------- experience ---------- */
+.xp{border:1.5px solid var(--ink);background:var(--paper)}
+.xp-row{display:grid;grid-template-columns:215px 1fr;border-bottom:1.5px solid var(--ink)}
+.xp-row:last-child{border-bottom:none}
+@media(max-width:760px){.xp-row{grid-template-columns:1fr}}
+.xp-when{
+  padding:24px;border-right:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);letter-spacing:.04em;line-height:1.8;
+}
+@media(max-width:760px){.xp-when{border-right:none;border-bottom:1px dashed var(--line-strong);padding-bottom:14px}}
+.xp-what{padding:24px 28px}
+.xp-what h3{font-family:var(--display);font-weight:700;font-size:21px;text-transform:uppercase;letter-spacing:.02em}
+.xp-what .role{font-family:var(--mono);font-size:12.5px;color:var(--c-orange);font-weight:600;letter-spacing:.04em;margin:2px 0 10px}
+.xp-what p{color:var(--ink-soft);font-size:15px}
+.badge{
+  display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;
+  border:1.5px solid var(--ink);padding:2px 8px;margin-left:10px;vertical-align:middle;
+  background:var(--c-yellow);
+}
+
+/* ---------- skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1.5px solid var(--ink);background:var(--paper)}
+@media(max-width:860px){.skills{grid-template-columns:1fr}}
+.skill-col{padding:26px 28px;border-right:1.5px solid var(--ink)}
+.skill-col:last-child{border-right:none}
+@media(max-width:860px){.skill-col{border-right:none;border-bottom:1.5px solid var(--ink)}.skill-col:last-child{border-bottom:none}}
+.skill-col h3{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--ink-faint);
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1.5px solid var(--ink);
+}
+.skill-col ul{list-style:none}
+.skill-col li{padding:7px 0;font-size:15px;border-bottom:1px dashed var(--line-strong);display:flex;justify-content:space-between;gap:10px}
+.skill-col li:last-child{border-bottom:none}
+.skill-col .lvl{font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);letter-spacing:.04em;align-self:center;text-align:right}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid var(--ink);background:var(--paper)}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr}}
+.contact-left{padding:34px;border-right:1.5px solid var(--ink)}
+@media(max-width:760px){.contact-left{border-right:none;border-bottom:1.5px solid var(--ink)}}
+.contact-left h3{font-family:var(--display);font-size:30px;font-weight:800;text-transform:uppercase;line-height:1.05}
+.contact-left p{margin-top:14px;color:var(--ink-soft);max-width:42ch}
+.contact-right{padding:34px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.c-line{display:flex;gap:14px;align-items:baseline;font-size:15px}
+.c-line .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-faint);min-width:84px}
+.c-line a{text-decoration-color:var(--c-orange);text-underline-offset:3px}
+
+/* ---------- title block footer ---------- */
+footer{padding:0;background:var(--paper)}
+.tblock{
+  max-width:var(--maxw);margin:40px auto 60px;border:1.5px solid var(--ink);
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;font-family:var(--mono);
+}
+@media(max-width:760px){.tblock{grid-template-columns:1fr 1fr;margin:32px 28px 48px}}
+.tcell{padding:10px 16px;border-right:1.5px solid var(--ink);font-size:11px;letter-spacing:.04em}
+.tcell:last-child{border-right:none}
+@media(max-width:760px){.tcell:nth-child(2){border-right:none}.tcell:nth-child(1),.tcell:nth-child(2){border-bottom:1.5px solid var(--ink)}}
+.tcell .lab{color:var(--ink-faint);font-size:9.5px;display:block;letter-spacing:.1em}
+.tcell .v{font-weight:600;font-size:12px}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- contour-legend scroll indicator -->
+<div class="legend" aria-hidden="true">
+  <div class="cap">SCROLL<br>POS</div>
+  <div class="bar">
+    <div class="tick" style="top:0"></div><div class="tick" style="top:25%"></div>
+    <div class="tick" style="top:50%"></div><div class="tick" style="top:75%"></div>
+    <div class="tick" style="top:calc(100% - 1.5px)"></div>
+    <div class="marker" id="legendMarker" style="top:0"></div>
+  </div>
+  <div class="val" id="legendVal">0%</div>
+</div>
+
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#top">A.KOCH<span class="id"> / MECH-ENG</span></a>
+    <nav class="menu" aria-label="Sections">
+      <a href="#projects">PROJECTS</a>
+      <a href="#experience">EXPERIENCE</a>
+      <a href="#skills">TOOLKIT</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">MECHANICAL ENGINEER — SIMULATION &amp; MECHANISM DESIGN</div>
+      <h1>Andrew<br>Koch<br><span class="thin">design.<br>simulate.<br>solve.</span></h1>
+      <p class="hero-sub">Mechanical Engineering, Michigan State University (Dec 2026). I solve engineering problems through design — taking ideas from concept to CAD, proving them out in analysis and simulation, and turning them into solutions that work in the real world.</p>
+      <div class="hero-tags">
+        <span class="tag">SIEMENS NX</span><span class="tag">ABAQUS</span><span class="tag">SIMPACK</span><span class="tag">FEA / MBD</span><span class="tag">CFD</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn" href="#projects">VIEW PROJECTS ▸</a>
+        <a class="btn ghost" href="assets/Andrew_Koch_Resume.pdf" download>RESUME (PDF)</a>
+      </div>
+    </div>
+    <div class="hero-viewport">
+      <div class="viewport" id="vpHero" data-model="models/capstone-suspension.glb" data-name="FRONT_SUSPENSION_ASM" data-mat="Cast Al / Sheet Steel" data-autoload="true"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Featured Work</h2><span class="rule"></span><span class="ref">DWG 01 — INTERACTIVE MODELS</span>
+    </div>
+
+    <!-- ---- Capstone ---- -->
+    <article class="project reveal">
+      <div class="proj-frame">
+        <div class="proj-title">
+          <h3>Flex Body Optimization — GM Capstone</h3>
+          <div class="proj-meta">SPONSOR: GENERAL MOTORS · ME 481 · JAN–APR 2026<br>NX → ABAQUS → SIMPACK</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-media">
+            <div class="model-tabs" role="tablist" aria-label="Capstone models">
+              <button class="model-tab" role="tab" aria-selected="true" data-target="vpCap1">FRONT SUSPENSION</button>
+              <button class="model-tab" role="tab" aria-selected="false" data-target="vpCap2">REAR AXLE</button>
+            </div>
+            <div style="position:absolute;inset:46px 0 0 0">
+              <div class="viewport" id="vpCap1" data-model="models/capstone-suspension.glb" data-name="FRONT_SUSPENSION_ASM" data-mat="Knuckle: Cast Al · Arms: 5mm Steel"></div>
+              <div class="viewport" id="vpCap2" data-model="models/capstone-axle.glb" data-name="REAR_AXLE_ASM" data-mat="Housing: Cast Al · Tube: 6mm Steel" style="display:none"></div>
+            </div>
+          </div>
+          <div class="proj-copy">
+            <p>Full-vehicle multibody models with 17+ flexible components are accurate — and too slow for routine design iteration. Our five-person team built GM a set of best practices for choosing exactly how much flexibility each suspension component actually needs, per event type.</p>
+            <p>I modeled the front suspension and rear axle in NX to GM's hardpoints and mass targets, generated Craig-Bampton reduced flex bodies in Abaqus, and integrated them into a full-vehicle Simpack model. We then ran a structured DoE across ride, handling, and durability events comparing three eigenmode allocation strategies.</p>
+            <div class="callout">
+              <span class="k">KEY RESULT</span>
+              Our Component Sensitivity method was <b>8× more accurate</b> than spreading flexibility evenly across components — at the same computational cost.
+            </div>
+            <ul class="dims">
+              <li><span class="d-key">METHODS DEVELOPED</span><span class="d-val">Modal Participation &amp; Component Sensitivity distribution</span></li>
+              <li><span class="d-key">RECOMMENDATIONS</span><span class="d-val">Event-specific flexibility settings for ride, handling &amp; durability</span></li>
+              <li><span class="d-key">RECOGNITION</span><span class="d-val">1st Place, Best Technical Presentation — MSU Design Day 2026</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="stats" style="border:none;border-top:1.5px solid var(--ink)">
+          <div class="stat"><div class="num">150<span>+</span></div><div class="lab">FULL-VEHICLE SIMULATIONS RUN</div></div>
+          <div class="stat"><div class="num">8<span>×</span></div><div class="lab">MORE ACCURATE THAN THE BASELINE METHOD</div></div>
+          <div class="stat"><div class="num">$464<span>K</span></div><div class="lab">PROJECTED ANNUAL SAVINGS FOR GM</div></div>
+          <div class="stat"><div class="num">1<span>st</span></div><div class="lab">BEST TECHNICAL PRESENTATION — DESIGN DAY 2026</div></div>
+        </div>
+        <div class="video-frame">
+          <video controls preload="none" poster="assets/reel-poster.jpg" src="assets/capstone-reel.mp4"></video>
+          <div class="video-cap">FIG. 01 — COMPONENT MODESHAPES + SIMPACK POTHOLE / COBBLESTONE DEFORMATION RESULTS (1:48)</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---- Conveyor ---- -->
+    <article class="project reveal">
+      <div class="proj-frame">
+        <div class="proj-title">
+          <h3>Bottle Line Accumulation — Drop-Down Rail</h3>
+          <div class="proj-meta">PERRIGO — PRODUCTION ENGINEERING INTERN · SUMMER 2025<br>TO-SCALE LINE REPLICA — SIEMENS NX</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-media">
+            <div style="position:absolute;inset:0">
+              <div class="viewport" id="vpConv" data-model="models/conveyor.glb" data-name="PACKAGING_LINE_REPLICA" data-mat="To-scale production layout"></div>
+            </div>
+          </div>
+          <div class="proj-copy">
+            <p>A to-scale CAD replica of a live bottle-packaging production line, built to sell a floor change before anyone touched the floor.</p>
+            <p>The accumulation table needed to run a single-file line of bottles and switch between modes without stopping production. My solution: a <b>drop-down rail</b> that lowers into the lane to channel bottles into a single line, then retracts for full-width accumulation — a seamless changeover with no manual rework between runs.</p>
+            <div class="callout">
+              <span class="k">WHY MODEL IT</span>
+              The replica was the visual aid that carried the proposal — operators and engineering could walk the change in 3D, catch clearance issues, and sign off before fabrication.
+            </div>
+            <ul class="dims">
+              <li><span class="d-key">SCOPE</span><span class="d-val">Full line layout: conveyors, accumulation table, rail mechanism</span></li>
+              <li><span class="d-key">MECHANISM</span><span class="d-val">Retractable drop-down guide rail for single-line / bulk switching</span></li>
+              <li><span class="d-key">OUTCOME</span><span class="d-val">Implemented solution communicated &amp; validated through the model</span></li>
+            </ul>
+            <p style="font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em">NOTE: LARGE MODEL (~13 MB) — LOADS ON SCROLL.</p>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Experience</h2><span class="rule"></span><span class="ref">DWG 02 — REVISION HISTORY</span>
+    </div>
+    <div class="xp reveal">
+      <div class="xp-row">
+        <div class="xp-when">2026 →<br>AUBURN HILLS, MI</div>
+        <div class="xp-what">
+          <h3>BorgWarner <span class="badge">INCOMING</span></h3>
+          <div class="role">MECHANICAL ENGINEERING CO-OP — SOLENOIDS</div>
+          <p>Joining the solenoids team to work on electromagnetic actuation components for propulsion systems — design, analysis, and validation.</p>
+        </div>
+      </div>
+      <div class="xp-row">
+        <div class="xp-when">MAY–AUG 2025<br>ALLEGAN, MI</div>
+        <div class="xp-what">
+          <h3>Perrigo Company plc</h3>
+          <div class="role">PRODUCTION ENGINEERING INTERN</div>
+          <p>Improved overall equipment effectiveness on bottle packaging lines. Designed and implemented adjustable conveyor guides to eliminate bottleneck jams and product loss, and supported new induction sealer procurement to reduce TEP deviations — cutting line interruptions and changeover time, saving over <b>$100,000</b> in deviation costs.</p>
+        </div>
+      </div>
+      <div class="xp-row">
+        <div class="xp-when">MAY–AUG 2024<br>FALCONER, NY</div>
+        <div class="xp-what">
+          <h3>SKF Aeroengine North America</h3>
+          <div class="role">DIGITIZATION INTERN</div>
+          <p>Contributed CAD data extraction and reconstruction to an automated engineering design tool, improving drawing accuracy across a legacy print library. Analyzed print data with E-BOM, PLM, and CAD tools to flag design discrepancies and feed actionable improvements into the design automation program.</p>
+        </div>
+      </div>
+      <div class="xp-row">
+        <div class="xp-when">EXP. DEC 2026<br>EAST LANSING, MI</div>
+        <div class="xp-what">
+          <h3>Michigan State University</h3>
+          <div class="role">B.S. MECHANICAL ENGINEERING</div>
+          <p>Focus in vibrations, multibody dynamics, and thermal systems. GM-sponsored capstone (ME 481) — 1st place, Best Technical Presentation, Design Day 2026.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEADERSHIP & RESEARCH ================= -->
+<section id="leadership">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Leadership &amp; Research</h2><span class="rule"></span><span class="ref">DWG 03 — SUPPORTING DOCUMENTS</span>
+    </div>
+    <div class="xp reveal">
+      <div class="xp-row">
+        <div class="xp-when">JAN 2023–<br>JAN 2025</div>
+        <div class="xp-what">
+          <h3>ASME — MSU Chapter</h3>
+          <div class="role">PRESIDENT (FORMERLY TREASURER)</div>
+          <p>Led the chapter's events, technical workshops, and industry talks. Launched the annual Design Series and 3D Printing Design Competition, brought 10+ companies to campus, and grew average event attendance over <b>75%</b> year-over-year.</p>
+        </div>
+      </div>
+      <div class="xp-row">
+        <div class="xp-when">SEPT 2022–<br>MAY 2024</div>
+        <div class="xp-what">
+          <h3>TEDxMSU</h3>
+          <div class="role">FINANCIAL DIRECTOR</div>
+          <p>Led the finance team in securing over <b>$50,000</b> in annual conference funding through sponsorships and fundraisers — a 2.5× increase in funding availability since 2021 through new partnerships with MSU organizations.</p>
+        </div>
+      </div>
+      <div class="xp-row">
+        <div class="xp-when">APR 2024<br>UURAF</div>
+        <div class="xp-what">
+          <h3>Collatz Conjecture: Quantifying the Chaos</h3>
+          <div class="role">INDEPENDENT MATHEMATICS RESEARCH</div>
+          <p>Presented at the 2024 University Undergraduate Research &amp; Arts Forum. Created original visualizations of problem sequences and derived multi-variable equations to quantify patterns in the conjecture's chaotic behavior.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Toolkit</h2><span class="rule"></span><span class="ref">DWG 04 — BILL OF MATERIALS</span>
+    </div>
+    <div class="skills reveal">
+      <div class="skill-col">
+        <h3>SIMULATION &amp; ANALYSIS</h3>
+        <ul>
+          <li>Abaqus <span class="lvl">FEA · CRAIG-BAMPTON</span></li>
+          <li>Simpack <span class="lvl">FULL-VEHICLE MBD</span></li>
+          <li>SimScale <span class="lvl">CFD</span></li>
+          <li>Modal analysis &amp; reduction <span class="lvl">VIBRATIONS</span></li>
+          <li>Design of Experiments <span class="lvl">PARAMETRIC STUDIES</span></li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h3>DESIGN &amp; CAD</h3>
+        <ul>
+          <li>Siemens NX <span class="lvl">PRIMARY</span></li>
+          <li>Shapr3D <span class="lvl">CONCEPT / MOBILE</span></li>
+          <li>Mechanism design <span class="lvl">LINKAGES · ACTUATION</span></li>
+          <li>Suspension architecture <span class="lvl">KINEMATICS</span></li>
+          <li>Large assembly modeling <span class="lvl">TO-SCALE LAYOUTS</span></li>
+        </ul>
+      </div>
+      <div class="skill-col">
+        <h3>PROGRAMMING &amp; OPERATIONS</h3>
+        <ul>
+          <li>Python <span class="lvl">DATA · SCRIPTING</span></li>
+          <li>MATLAB <span class="lvl">ANALYSIS</span></li>
+          <li>SAP · Trackwise · Redzone <span class="lvl">PRODUCTION SYSTEMS</span></li>
+          <li>Lean Six Sigma <span class="lvl">YELLOW BELT</span></li>
+          <li>Technical communication <span class="lvl">AWARD-WINNING</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" style="border-bottom:none">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Contact</h2><span class="rule"></span><span class="ref">DWG 05 — APPROVAL BLOCK</span>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-left">
+        <h3>Let's connect.</h3>
+        <p>Whether it's an engineering opportunity, a project you'd like to collaborate on, or just a question about something you saw here — I'm always happy to talk. Reach out anytime.</p>
+        <div class="hero-cta" style="margin-top:24px">
+          <a class="btn" href="mailto:kochand03@gmail.com">EMAIL ME ▸</a>
+          <a class="btn ghost" href="assets/Andrew_Koch_Resume.pdf" download>RESUME (PDF)</a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="c-line"><span class="k">EMAIL</span><a href="mailto:kochand03@gmail.com">kochand03@gmail.com</a></div>
+        <div class="c-line"><span class="k">PHONE</span><a href="tel:+19895459237">(989) 545-9237</a></div>
+        <div class="c-line"><span class="k">LINKEDIN</span><a href="https://www.linkedin.com/in/andrew-koch-a5a018256/" target="_blank" rel="noopener">linkedin.com/in/andrew-koch</a></div>
+        <div class="c-line"><span class="k">LOCATION</span><span>Bay City, MI</span></div>
+        <div class="c-line"><span class="k">STATUS</span><span>B.S. ME, Michigan State — Dec 2026</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TITLE BLOCK FOOTER ================= -->
+<footer>
+  <div class="tblock">
+    <div class="tcell"><span class="lab">TITLE</span><span class="v">PORTFOLIO — ANDREW KOCH, MECHANICAL ENGINEER</span></div>
+    <div class="tcell"><span class="lab">DRAWN BY</span><span class="v">A. KOCH</span></div>
+    <div class="tcell"><span class="lab">REV</span><span class="v">A · 2026</span></div>
+    <div class="tcell"><span class="lab">SCALE</span><span class="v">1 : 1</span></div>
+  </div>
+</footer>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from './vendor/three/OrbitControls.js';
+import { GLTFLoader } from './vendor/three/GLTFLoader.js';
+import { DRACOLoader } from './vendor/three/DRACOLoader.js';
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const draco = new DRACOLoader();
+draco.setDecoderPath('./vendor/draco/');
+const loader = new GLTFLoader();
+loader.setDRACOLoader(draco);
+
+class Viewer {
+  constructor(el){
+    this.el = el;
+    this.url = el.dataset.model;
+    this.name = el.dataset.name || 'MODEL';
+    this.mat  = el.dataset.mat || '';
+    this.started = false;
+    this.userInteracted = false;
+    this.wire = false;
+    this.buildChrome();
+  }
+  buildChrome(){
+    this.el.insertAdjacentHTML('beforeend', `
+      <div class="vp-corner tl"></div><div class="vp-corner tr"></div>
+      <div class="vp-corner bl"></div><div class="vp-corner br"></div>
+      <div class="vp-load"><div>LOADING ${this.name}…</div><div class="track"><div class="fill"></div></div></div>
+    `);
+    this.loadEl = this.el.querySelector('.vp-load');
+    this.fillEl = this.el.querySelector('.fill');
+  }
+  start(){
+    if(this.started) return; this.started = true;
+    const w = this.el.clientWidth || 600, h = this.el.clientHeight || 430;
+    this.renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setSize(w, h);
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.el.appendChild(this.renderer.domElement);
+
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(38, w/h, 0.01, 2000);
+
+    const hemi = new THREE.HemisphereLight(0xdfeaf2, 0x2a3036, 1.15);
+    this.scene.add(hemi);
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(4, 6, 5); this.scene.add(key);
+    const rim = new THREE.DirectionalLight(0x9fb8c9, 0.7);
+    rim.position.set(-5, 2, -4); this.scene.add(rim);
+
+    loader.load(this.url,
+      (gltf)=>{ this.onModel(gltf); },
+      (xhr)=>{ if(xhr.total) this.fillEl.style.width = Math.min(100, xhr.loaded/xhr.total*100) + '%'; },
+      (err)=>{ this.loadEl.innerHTML = '<div>MODEL FAILED TO LOAD<br>SERVE THIS SITE OVER HTTP — SEE README</div>'; console.error(err); }
+    );
+
+    new ResizeObserver(()=>this.resize()).observe(this.el);
+  }
+  onModel(gltf){
+    const root = gltf.scene;
+    // center + scale to unit-ish size
+    const box = new THREE.Box3().setFromObject(root);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    root.position.sub(center);
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const dist = maxDim * 1.55;
+    this.camera.position.set(dist*0.85, dist*0.5, dist*0.9);
+    this.camera.lookAt(0,0,0);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.08;
+    this.controls.minDistance = maxDim*0.4;
+    this.controls.maxDistance = maxDim*4;
+    this.controls.addEventListener('start', ()=>{ this.userInteracted = true; });
+
+    let tris = 0;
+    this.meshMats = [];
+    root.traverse(o=>{
+      if(o.isMesh){
+        tris += o.geometry.index ? o.geometry.index.count/3 : o.geometry.attributes.position.count/3;
+        this.meshMats.push(o);
+      }
+    });
+    this.scene.add(root);
+    this.model = root;
+    this.loadEl.remove();
+
+    this.el.insertAdjacentHTML('beforeend', `
+      <div class="vp-hud"><b>${this.name}</b><br>${this.mat}<br>TRIS: ${Math.round(tris).toLocaleString()}</div>
+      <div class="vp-hint">LMB ROTATE · RMB PAN · SCROLL ZOOM</div>
+      <div class="vp-tools">
+        <button class="vp-btn wireBtn" aria-pressed="false">WIRE</button>
+        <button class="vp-btn fitBtn">FIT</button>
+      </div>
+    `);
+    this.el.querySelector('.wireBtn').addEventListener('click', (e)=>{
+      this.wire = !this.wire;
+      e.currentTarget.setAttribute('aria-pressed', String(this.wire));
+      this.meshMats.forEach(m=>{ const mats = Array.isArray(m.material)? m.material : [m.material]; mats.forEach(mt=> mt.wireframe = this.wire); });
+    });
+    this.el.querySelector('.fitBtn').addEventListener('click', ()=>{
+      this.camera.position.set(dist*0.85, dist*0.5, dist*0.9);
+      this.controls.target.set(0,0,0);
+      this.userInteracted = false;
+    });
+
+    this.animate();
+  }
+  animate(){
+    requestAnimationFrame(()=>this.animate());
+    if(this.model && !this.userInteracted && !prefersReduced) this.model.rotation.y += 0.0028;
+    if(this.controls) this.controls.update();
+    if(this.el.offsetParent !== null) this.renderer.render(this.scene, this.camera);
+  }
+  resize(){
+    if(!this.renderer) return;
+    const w = this.el.clientWidth, h = this.el.clientHeight;
+    if(!w || !h) return;
+    this.camera.aspect = w/h; this.camera.updateProjectionMatrix();
+    this.renderer.setSize(w, h);
+  }
+}
+
+const viewers = {};
+document.querySelectorAll('.viewport').forEach(el=>{ viewers[el.id] = new Viewer(el); });
+
+// Lazy-start when visible (hero starts immediately)
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ viewers[en.target.id].start(); io.unobserve(en.target); }
+  });
+},{rootMargin:'200px'});
+Object.values(viewers).forEach(v=>{
+  if(v.el.dataset.autoload === 'true') v.start();
+  else io.observe(v.el);
+});
+
+// Capstone model tabs
+document.querySelectorAll('.model-tab').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.model-tab').forEach(b=>b.setAttribute('aria-selected','false'));
+    btn.setAttribute('aria-selected','true');
+    ['vpCap1','vpCap2'].forEach(id=>{
+      const show = id === btn.dataset.target;
+      const el = document.getElementById(id);
+      el.style.display = show ? 'block' : 'none';
+      if(show){ viewers[id].start(); viewers[id].resize(); }
+    });
+  });
+});
+
+// Scroll legend
+const marker = document.getElementById('legendMarker');
+const legendVal = document.getElementById('legendVal');
+addEventListener('scroll', ()=>{
+  const max = document.documentElement.scrollHeight - innerHeight;
+  const p = max > 0 ? scrollY / max : 0;
+  marker.style.top = `calc(${(p*100).toFixed(1)}% - 1.5px)`;
+  legendVal.textContent = Math.round(p*100) + '%';
+}, {passive:true});
+
+// Reveal on scroll
+const rio = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target);} });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
+</script>
+</body>
+</html>
